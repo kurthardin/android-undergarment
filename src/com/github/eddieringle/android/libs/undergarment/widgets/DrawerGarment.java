@@ -82,6 +82,8 @@ public class DrawerGarment extends FrameLayout {
     private int mSlideTarget;
 
     private int mTouchTargetWidth;
+    
+    private Rect mWindowRect;
 
     private Drawable mShadowDrawable;
 
@@ -165,7 +167,6 @@ public class DrawerGarment extends FrameLayout {
         mDecorContentParent.addView(this);
         mAdded = true;
 
-        /* TODO: Make this a configurable attribute */
         if (mContentBkg == null) {
         	mDecorContent.setBackgroundColor(Color.WHITE);
         } else {
@@ -187,6 +188,8 @@ public class DrawerGarment extends FrameLayout {
         super(activity);
 
         final DisplayMetrics dm = activity.getResources().getDisplayMetrics();
+        
+        mWindowRect = new Rect();
 
         mTouchTargetWidth = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
                 TOUCH_TARGET_WIDTH_DIP, dm));
@@ -229,11 +232,10 @@ public class DrawerGarment extends FrameLayout {
 
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-        Rect windowRect = new Rect();
-        mDecorView.getWindowVisibleDisplayFrame(windowRect);
+        mDecorView.getWindowVisibleDisplayFrame(mWindowRect);
 
         if (mSlideTarget == SLIDE_TARGET_WINDOW) {
-            mDrawerContent.layout(left, top + windowRect.top, right, bottom);
+            mDrawerContent.layout(left, top + mWindowRect.top, right, bottom);
         } else {
             mDrawerContent.layout(left, mDecorContent.getTop(), right, bottom);
         }
@@ -342,7 +344,7 @@ public class DrawerGarment extends FrameLayout {
         final int widthPixels = getResources().getDisplayMetrics().widthPixels;
 
         final int deltaX = (int) (event.getX() + 0.5f) - mGestureCurrentX;
-        final int deltaY = (int) (event.getY() + 0.5f) - mGestureCurrentY;
+//        final int deltaY = (int) (event.getY() + 0.5f) - mGestureCurrentY;
 
         /*
          * Obtain a new VelocityTracker if we don't already have one. Also add this MotionEvent
@@ -522,7 +524,7 @@ public class DrawerGarment extends FrameLayout {
 
         mDrawerMoving = true;
 
-        final int widthPixels = getResources().getDisplayMetrics().widthPixels;
+//        final int widthPixels = getResources().getDisplayMetrics().widthPixels;
         mScroller.startScroll(mDecorOffsetX, 0, -mDecorOffsetX, 0,
                 animate ? SCROLL_DURATION : 0);
 
