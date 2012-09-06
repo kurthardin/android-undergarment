@@ -102,6 +102,8 @@ public class DrawerGarment extends FrameLayout {
     private ViewGroup mDecorContent;
 
     private ViewGroup mDecorContentParent;
+    
+    private Drawable mContentBkg;
 
     private ViewGroup mDrawerContent;
 
@@ -164,8 +166,12 @@ public class DrawerGarment extends FrameLayout {
         mAdded = true;
 
         /* TODO: Make this a configurable attribute */
-        mDecorContent.setBackgroundColor(Color.WHITE);
-
+        if (mContentBkg == null) {
+        	mDecorContent.setBackgroundColor(Color.WHITE);
+        } else {
+        	mDecorContent.setBackgroundDrawable(mContentBkg);
+        }
+        
         /*
          * Set an empty onClickListener on the Decor content parent to prevent any touch events
          * from escaping and passing through to the drawer even while it's closed.
@@ -199,6 +205,7 @@ public class DrawerGarment extends FrameLayout {
         mWindowTargetParent = (ViewGroup) mWindowTarget.getParent();
         mContentTarget = (ViewGroup) mDecorView.findViewById(android.R.id.content);
         mContentTargetParent = (ViewGroup) mContentTarget.getParent();
+        mContentBkg = mDecorView.getBackground();
         mDrawerContent = (ViewGroup) LayoutInflater.from(activity).inflate(drawerLayout, null);
 
         /*
@@ -428,6 +435,21 @@ public class DrawerGarment extends FrameLayout {
             mShadowDrawable.draw(canvas);
             canvas.restore();
         }
+    }
+    
+    public void setContentBackground(Drawable bkg) {
+    	if (bkg == null) {
+    		throw new IllegalArgumentException("Background Drawable must not be null.");
+    	}
+    	
+    	mContentBkg = bkg;
+    	if (mDecorContent != null) {
+    		mDecorContent.setBackgroundDrawable(bkg);
+    	}
+    }
+    
+    public Drawable getcontentViewBkgColor() {
+    	return mContentBkg;
     }
 
     public void setDrawerEnabled(final boolean enabled) {
