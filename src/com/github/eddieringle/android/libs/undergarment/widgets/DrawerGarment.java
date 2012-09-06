@@ -232,6 +232,7 @@ public class DrawerGarment extends FrameLayout {
 
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+    	
     	mDecorView.getWindowVisibleDisplayFrame(mWindowRect);
 
     	if (mSlideTarget == SLIDE_TARGET_WINDOW) {
